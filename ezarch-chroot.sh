@@ -34,9 +34,16 @@ echo "Please enter your user password: "
 read -s USERPASS
 echo "$USERNAME:$USERPASS" | chpasswd
 
-# Enable wheel privileges for doas
+# Enable wheel privileges for sudo
 # They don't get configured with the installation of the package.
-printf "permit persist :wheel\npermit nopass root\n" > /etc/doas.conf
+read -p "Edit /etc/sudoers interactively? (recommended) [Y/n]" USE_VISUDO
+USE_VISUDO=${USE_VISUDO:-y}
+USE_VISUDO=$(echo "$USE_VISUDO" | tr '[:upper:]' '[:lower:]')
+if [ USE_VISUDO = "y" ]; then
+  EDITOR=nano visudo
+else
+  sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+fi
 
 # Delete GRUB after setup
 # GRUB packages are not needed after setup, so they will be deleted to save space.
