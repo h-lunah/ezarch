@@ -42,7 +42,7 @@ USE_VISUDO=$(echo "$USE_VISUDO" | tr '[:upper:]' '[:lower:]')
 if [ USE_VISUDO = "y" ]; then
   EDITOR=nano visudo
 else
-  sed -i 's/^#\s*\(%wheel\s\+ALL=(ALL)\s\+NOPASSWD:\s\+ALL\)/\1/' /etc/sudoers
+  sed -i 's/^#\s*\(%wheel ALL=(ALL) ALL\)/\1/' /etc/sudoers
 fi
 
 # Delete GRUB after setup
