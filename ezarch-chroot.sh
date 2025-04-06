@@ -39,10 +39,10 @@ echo "$USERNAME:$USERPASS" | chpasswd
 read -p "Edit /etc/sudoers interactively? (recommended) [Y/n]" USE_VISUDO
 USE_VISUDO=${USE_VISUDO:-y}
 USE_VISUDO=$(echo "$USE_VISUDO" | tr '[:upper:]' '[:lower:]')
-if [ USE_VISUDO = "y" ]; then
+if [ "$USE_VISUDO" = "y" ]; then
   EDITOR=nano visudo
 else
-  sed -i 's/^#\s*\(%wheel ALL=(ALL) ALL\)/\1/' /etc/sudoers
+  sed -i 's/^#\s*\(%wheel ALL=(ALL:ALL) ALL\)/\1/; t; q1' /etc/sudoers || echo "Warning: No changes to /etc/sudoers made. Please run visudo."
 fi
 
 # Delete GRUB after setup
