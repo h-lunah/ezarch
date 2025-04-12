@@ -36,14 +36,7 @@ echo "$USERNAME:$USERPASS" | chpasswd
 
 # Enable wheel privileges for sudo
 # They don't get configured with the installation of the package.
-read -p "Edit /etc/sudoers interactively? (recommended) [Y/n]" USE_VISUDO
-USE_VISUDO=${USE_VISUDO:-y}
-USE_VISUDO=$(echo "$USE_VISUDO" | tr '[:upper:]' '[:lower:]')
-if [ "$USE_VISUDO" = "y" ]; then
-  EDITOR=nano visudo
-else
-  sed -i 's/^#\s*\(%wheel ALL=(ALL:ALL) ALL\)/\1/; t; q1' /etc/sudoers || echo "Warning: No changes to /etc/sudoers made. Please run visudo."
-fi
+EDITOR=nano visudo
 
 # Delete GRUB after setup
 # GRUB packages are not needed after setup, so they will be deleted to save space.
